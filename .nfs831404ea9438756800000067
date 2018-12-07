@@ -1,0 +1,8 @@
+
+MODEL=global_no_rnn_conditioned_v6
+GLAD=GLADEncoder_global_no_rnn_conditioned_v6
+DATA=woz
+GPU=2
+EPOCH=2000
+
+CUDA_VISIBLE_DEVICES=$GPU python train.py --gpu $GPU --encoder $GLAD -n $MODEL --data $DATA --epoch $EPOCH
