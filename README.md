@@ -9,7 +9,8 @@ If you use this in your work, please cite the following
   title={ Toward Scalable Neural Dialogue State Tracking },
   author={ Nouri, Elnaz and Hosseini-Asl, Ehsan },
   booktitle={ NeurIPS 2018, 2nd Conversational AI workshop },
-  year={ 2018 }
+  year={ 2018 },
+  arxiv={ https://arxiv.org/abs/1812.00899 }
 }
 ```
 
