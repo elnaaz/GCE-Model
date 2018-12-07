@@ -1,6 +1,6 @@
 # Globally-Conditioned Encoder (GCE) For Neural Dialogue State Tracking
 
-This repository contains an implementation of the [Toward Scalable Neural Dialogue State Tracking Model](arxiv.org/abs/1812.00899).
+This repository contains an implementation of the [Toward Scalable Neural Dialogue State Tracking Model](https://arxiv.org/abs/1812.00899).
 If you use this in your work, please cite the following
 
 arxiv.org/abs/1812.00899  
