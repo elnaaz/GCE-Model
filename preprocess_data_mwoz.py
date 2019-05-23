@@ -7,21 +7,32 @@ import requests
 from tqdm import tqdm
 from vocab import Vocab
 from embeddings import GloveEmbedding, KazumaCharEmbedding
+from argparse import ArgumentDefaultsHelpFormatter, ArgumentParser
 from dataset import Dataset, Ontology
 
+def get_args():
+    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
+    parser.add_argument('--data_dir', help='root experiment folder', default='data/multi_woz/')
+    parser.add_argument('--only_domain', help='', default='')
+    args = parser.parse_args()
+    return args
 
-root_dir = os.path.dirname(__file__)
-data_dir = os.path.join(root_dir, 'data', 'multi_woz')
+args = get_args()
+data_dir = args.data_dir
+only_domain = args.only_domain
+# root_dir = os.path.dirname(__file__)
+# data_dir = os.path.join(root_dir, 'data', 'woz')
 
 
-furl = 'https://mi.eng.cam.ac.uk/~nm480/woz_2.0.zip'
-fzip = os.path.join(data_dir, 'woz.zip')
+# furl = 'https://mi.eng.cam.ac.uk/~nm480/woz_2.0.zip'
+# fzip = os.path.join(data_dir, 'woz.zip')
 
 draw = os.path.join(data_dir, 'raw')
-dann = os.path.join(data_dir, 'ann')
+dann = os.path.join(data_dir, only_domain+'ann')
+
+#dann_domain = os.path.join(dann, only_domain)
 
 splits = ['dev', 'train', 'test']
-
 
 def download(url, to_file):
     r = requests.get(url, stream=True)
@@ -36,6 +47,20 @@ def missing_files(d, files):
 
 
 if __name__ == '__main__':
+    # if not os.path.isfile(fzip):
+    #     if not os.path.isdir(data_dir):
+    #         os.makedirs(data_dir)
+    #     logging.warn('Download from {} to {}'.format(furl, fzip))
+    #     download(furl, fzip)
+
+    # if missing_files(draw, splits):
+    #     if not os.path.isdir(draw):
+    #         os.makedirs(draw)
+    #     with zipfile.ZipFile(fzip) as f:
+    #         logging.warn('Extracting {} to {}'.format(fzip, draw))
+    #         for split in splits:
+    #             with f.open('woz_2.0/woz2_{}.json'.format(split)) as fin, open(os.path.join(draw, '{}.json'.format(split)), 'wb') as fout:
+    #                 fout.write(fin.read())
 
     if missing_files(dann, files=splits + ['ontology', 'vocab', 'emb']):
         if not os.path.isdir(dann):
@@ -47,7 +72,7 @@ if __name__ == '__main__':
         for s in splits:
             fname = '{}.json'.format(s)
             logging.warn('Annotating {}'.format(s))
-            dataset[s] = Dataset.annotate_raw(os.path.join(draw, fname))
+            dataset[s] = Dataset.annotate_raw(os.path.join(draw, fname), only_domain)
             dataset[s].numericalize_(vocab)
             ontology = ontology + dataset[s].extract_ontology()
             with open(os.path.join(dann, fname), 'wt') as f:
