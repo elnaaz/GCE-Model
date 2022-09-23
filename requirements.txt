@@ -1,4 +1,4 @@
-protobuf==3.4.0
+protobuf==3.18.3
 requests==2.18.4
 stanza==0.3
 tqdm==4.19.1.post1
